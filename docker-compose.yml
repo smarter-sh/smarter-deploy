@@ -1,0 +1,113 @@
+---
+#------------------------------------------------------------------------------
+# This file will start a MySQL database, a Redis
+# server, a Celery worker, and the application itself. The application
+# will be available at http://localhost:8000.
+#------------------------------------------------------------------------------
+services:
+  smarter-mysql:
+    container_name: smarter-mysql
+    mem_limit: 2g
+    cpus: 0.5
+    image: mysql:8
+    command: ["mysqld", "--mysql-native-password=ON"]
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: smarter
+      MYSQL_DATABASE: smarter
+      MYSQL_USER: smarter
+      MYSQL_PASSWORD: smarter
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+
+  smarter-redis:
+    container_name: smarter-redis
+    mem_limit: 1g
+    cpus: 0.25
+    image: redis:latest
+    command: redis-server --requirepass smarter
+
+  smarter-app:
+    container_name: smarter-app
+    mem_limit: 4g
+    cpus: 1
+    user: smarter_user
+    x-build:
+      type: docker
+    image: mcdaniel0073/smarter:latest
+    command: watchmedo auto-restart --directory=./smarter --pattern=*.py --recursive -- gunicorn smarter.wsgi:application -b 0.0.0.0:8000 --timeout 120
+    volumes:
+      - type: bind
+        source: ./smarter
+        target: /smarter
+        consistency: cached
+    ports:
+      - 8000:8000
+    depends_on:
+      - smarter-mysql
+      - smarter-redis
+    env_file:
+      - ./.env
+
+  smarter-worker:
+    container_name: smarter-worker
+    mem_limit: 2g
+    cpus: 0.5
+    user: smarter_user
+    x-build:
+      type: docker
+    image: mcdaniel0073/smarter:latest
+    command: celery -A smarter.workers.celery.app worker --concurrency=4 --loglevel=info -Q default_celery_task_queue -E
+    depends_on:
+      - smarter-mysql
+      - smarter-redis
+      - smarter-app
+    env_file:
+      - ./.env
+    volumes:
+      - type: bind
+        source: ./smarter
+        target: /smarter
+        consistency: cached
+    healthcheck:
+      test:
+        ["CMD", "celery", "-A", "smarter.workers.celery.app", "inspect", "ping"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+  smarter-beat:
+    container_name: smarter-beat
+    mem_limit: 1g
+    cpus: 0.5
+    user: smarter_user
+    x-build:
+      type: docker
+    image: mcdaniel0073/smarter:latest
+    command: celery -A smarter.workers.celerybeat.app beat --loglevel=info
+    depends_on:
+      - smarter-mysql
+      - smarter-redis
+      - smarter-app
+    env_file:
+      - ./.env
+    volumes:
+      - type: bind
+        source: ./smarter
+        target: /smarter
+        consistency: cached
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "celery",
+          "-A",
+          "smarter.workers.celerybeat.app",
+          "inspect",
+          "ping",
+        ]
+      interval: 30s
+      timeout: 30s
+      retries: 3
