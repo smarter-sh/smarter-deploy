@@ -1,0 +1,72 @@
+# -------------------------------------
+# WARNING: everything is in here for a reason. Edit with care.
+# -------------------------------------
+
+# Google service account raw files.
+# -------------------------------------
+service-account.json
+service-account.b64
+
+# application data
+# -------------------------------------
+celerybeat-schedule
+mysql-data
+db.sqlite3
+.cache.sqlite
+staticfiles
+*.swp
+
+# build artifacts
+# -------------------------------------
+**/build/
+**/dist/
+lambda_dist_pkg
+*.zip
+# But don't ignore '.github/actions/build'
+!.github/actions/build/
+
+
+# os files
+# -------------------------------------
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# log data
+# -------------------------------------
+*.log
+*.db
+*.out
+
+
+# typical secrets files
+# -------------------------------------
+.env
+secrets.json
+config.json
+*.key
+*.pem
+*.p12
+*.pfx
+*.cer
+*.crt
+*.der
+*.p7b
+*.p7c
+
+
+# Python
+# -------------------------------------
+.pypi_cache
+__pycache__
+.pytest_cache
+venv
+.venv
+.pytest_cache
+*.pyc
+*.pyo
+*.pyd
+
+# ReactJS
+node_modules
+package-lock.json
