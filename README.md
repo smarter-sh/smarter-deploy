@@ -105,31 +105,9 @@ Go to [http://localhost:8000/admin/login/](http://localhost:8000/admin/login/) a
 
 ---
 
-## Smarter Helm Chart
+## Optional Kubernetes Deployment
 
-Deploy Smarter API and web console to Kubernetes using the public Helm chart, available at [ghcr.io/smarter-sh/charts/smarter](https://ghcr.io/smarter-sh/charts/smarter) or [Artifact Hub](https://artifacthub.io/packages/helm/project-smarter/smarter).
-
-### Quick Install
-
-Pull the chart:
-
-```console
-helm pull oci://ghcr.io/smarter-sh/charts/smarter --version 0.8.10
-```
-
-Install to Docker Desktop Kubernetes:
-
-```console
-helm upgrade --install smarter oci://ghcr.io/smarter-sh/charts/smarter \
-  --namespace smarter \
-  --create-namespace \
-  --timeout 900s \
-  --values values.yaml
-```
-
-### Configuration
-
-Add me please.
+See [Kubernetes Deployment Instructions](./docs/KUBERNETES.md).
 
 ## Documentation
 
