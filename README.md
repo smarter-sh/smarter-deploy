@@ -1,5 +1,6 @@
-# Smarter
+# Smarter Deploy
 
+[![Docker Hub](https://img.shields.io/docker/pulls/mcdaniel0073/smarter?label=Docker%20Hub&logo=docker)](https://hub.docker.com/r/mcdaniel0073/smarter)
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/project-smarter)](https://artifacthub.io/packages/search?repo=project-smarter)
 [![License: GNU AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 [![hack.d Lawrence McDaniel](https://img.shields.io/badge/hack.d-Lawrence%20McDaniel-orange.svg)](https://lawrencemcdaniel.com)
@@ -18,29 +19,89 @@
 
 **Smarter** provides seamless integration and interoperation between LLMs from DeepSeek, Google AI, Meta AI and OpenAI. It is LLM provider-agnostic, and provides seamless integrations to a continuously evolving list of value added services for security management, prompt content moderation, audit, cost accounting, and workflow management. **Smarter** is cloud native and runs on Kubernetes, on-site in your data center or in the cloud.
 
-## Quickstart To Run Locally
 
-You can spin up the platform locally in Docker in around 10 minutes. Runs on Linux, Windows and macOS.
+## Prerequisites
 
-1. [Docker](https://www.docker.com/products/docker-desktop/), and [Docker Compose](https://docs.docker.com/compose/install/).
+Before you begin, make sure you have:
 
-2. Add your credentials to [.env](./docs/example-dot-env) in the root of this repo.
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running (includes Docker Compose)
+- Basic familiarity with using the terminal/command prompt
+- (Optional) A Git client if you want to clone this repository
 
-3. Initialize, build and run the application locally.
+## Quickstart: Run Smarter Locally with Docker
+
+This guide will help you deploy Smarter on your local machine using Docker Desktop. You can get up and running in about 10 minutes!
+
+### 1. Install Docker Desktop
+
+If you haven't already, download and install [Docker Desktop](https://www.docker.com/products/docker-desktop/). This will also install Docker Compose.
+
+### 2. Prepare Your Environment File
+
+Smarter requires a `.env` file with your credentials and configuration. You can scaffold a template using the following command:
 
 ```console
-make                # scaffold a .env file in the root of the repo
-                    #
-                    # ****************************
-                    # STOP HERE!
-                    # ****************************
-                    # Add your credentials to .env located in the project root folder.
-                    #
-make init           # initialize Python virtual environment, build the Docker container, and seed the platform with test data
-make run            # runs all docker containers and starts a local web server http://127.0.0.1:8000/
+make                # creates a .env file in the root of the repo
 ```
 
-4. Login at http://localhost:8000/admin/login/ with user `admin` and password `smarter`.
+**Important:**
+- Open the newly created `.env` file and add your credentials (API keys, passwords, etc.) as needed. The application will not run without this step.
+
+### 3. Initialize and Build the Application
+
+This step sets up the Python environment, builds the Docker container, and seeds the platform with test data:
+
+```console
+make init
+```
+
+### 4. Start the Application
+
+Run the following command to start all Docker containers and launch the web server:
+
+```console
+make run
+```
+
+- The web console will be available at: [http://127.0.0.1:8000/](http://127.0.0.1:8000/) or [http://localhost:8000](http://localhost:8000)
+- If you see a login screen, your deployment is working!
+
+### 5. Log In
+
+Go to [http://localhost:8000/admin/login/](http://localhost:8000/admin/login/) and log in with:
+
+- **Username:** `admin`
+- **Password:** `smarter`
+
+> **Note:** These are default credentials for local testing. Change them for any production or public deployment.
+
+---
+
+## Troubleshooting & FAQ
+
+**Docker not running?**
+- Make sure Docker Desktop is open and running before you use any `make` commands.
+
+**Port already in use?**
+- If you get an error about port 8000, make sure nothing else is running on that port, or change the port in your `.env` and Docker configuration.
+
+**.env file issues?**
+- Double-check that your `.env` file exists in the project root and contains all required variables.
+
+**Still stuck?**
+- Try running `docker compose ps` to see the status of your containers.
+- Check the Docker Desktop dashboard for error logs.
+- Ask for help: [Lawrence McDaniel](https://lawrencemcdaniel.com/contact)
+
+---
+
+## What to Expect
+
+- After running `make run`, you should see the Smarter web console at [http://127.0.0.1:8000/](http://127.0.0.1:8000/).
+- The login page should load without errors.
+- If you encounter issues, see the troubleshooting section above.
+
+---
 
 ## Smarter Helm Chart
 
@@ -66,64 +127,7 @@ helm upgrade --install smarter oci://ghcr.io/smarter-sh/charts/smarter \
 
 ### Configuration
 
-See the [chart values.yaml](./helm/charts/smarter/values.yaml) for all available parameters, or view the [chart README](./helm/charts/smarter/README.md) for detailed configuration examples.
-
-Minimum required configuration in your `values.yaml`:
-
-```yaml
-env:
-  MYSQL_HOST: "your-mysql-host"
-  MYSQL_DATABASE: "smarter"
-  MYSQL_USER: "smarter_user"
-  MYSQL_PASSWORD: "your-secure-password"
-  OPENAI_API_KEY: "sk-..."
-  SECRET_KEY: "your-django-secret-key"
-
-  # Deployment
-  DJANGO_SETTINGS_MODULE: "${{ env.DJANGO_SETTINGS_MODULE }}"
-  ENVIRONMENT: "${{ inputs.environment }}"
-  NAMESPACE: "${{ env.NAMESPACE }}"
-  SMARTER_DOCKER_IMAGE: "${{ env.SMARTER_DOCKER_IMAGE }}"
-
-  # AWS
-  AWS_REGION: "${{ inputs.aws-region }}"
-  AWS_ACCESS_KEY_ID: "${{ inputs.aws-access-key-id }}"
-  AWS_SECRET_ACCESS_KEY: "${{ inputs.aws-secret-access-key }}"
-
-  # Security
-  FERNET_ENCRYPTION_KEY: "${{ inputs.fernet-encryption-key }}"
-  SECRET_KEY: "${{ env.SECRET_KEY }}"
-
-  # AI APIs
-  OPENAI_API_KEY: "${{ inputs.openai-api-key }}"
-  GOOGLE_MAPS_API_KEY: "${{ inputs.google-maps-api-key }}"
-  GEMINI_API_KEY: "${{ inputs.gemini-api-key }}"
-  LLAMA_API_KEY: "${{ inputs.llama-api-key }}"
-
-  # Database
-  MYSQL_HOST: "${{ env.MYSQL_HOST }}"
-  MYSQL_PORT: "${{ env.MYSQL_PORT }}"
-  MYSQL_DATABASE: "${{ env.SMARTER_MYSQL_DATABASE }}"
-  MYSQL_USER: "${{ env.SMARTER_MYSQL_USERNAME }}"
-  MYSQL_PASSWORD: "${{ env.SMARTER_MYSQL_PASSWORD }}"
-  MYSQL_ROOT_USERNAME: "${{ env.MYSQL_ROOT_USERNAME }}"
-  MYSQL_ROOT_PASSWORD: "${{ env.MYSQL_ROOT_PASSWORD }}"
-  SMARTER_MYSQL_TEST_DATABASE_PASSWORD: "${{ inputs.smarter-mysql-test_database_password }}"
-
-  # Admin
-  SMARTER_LOGIN_URL: "${{ env.SMARTER_LOGIN_URL }}"
-  SMARTER_ADMIN_PASSWORD: "${{ env.SMARTER_ADMIN_PASSWORD }}"
-  SMARTER_ADMIN_USERNAME: "${{ env.SMARTER_ADMIN_USERNAME }}"
-  SMARTER_ADMIN_EMAIL: "${{ env.SMARTER_ADMIN_EMAIL }}"
-
-  # SMTP
-  SMTP_HOST: "${{ env.SMTP_HOST }}"
-  SMTP_PORT: "${{ env.SMTP_PORT }}"
-  SMTP_USE_SSL: "${{ env.SMTP_USE_SSL }}"
-  SMTP_USE_TLS: "${{ env.SMTP_USE_TLS }}"
-  SMTP_USERNAME: "${{ env.SMTP_USERNAME }}"
-  SMTP_PASSWORD: "${{ env.SMTP_PASSWORD }}"
-```
+Add me please.
 
 ## Contributing
 
