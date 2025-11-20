@@ -52,7 +52,7 @@ services:
     mem_limit: 4g
     cpus: 1
     user: smarter_user
-    image: mcdaniel0073/smarter:19489667186
+    image: mcdaniel0073/smarter:latest
     command: gunicorn smarter.wsgi:application -b 0.0.0.0:8000 --timeout 120
     volumes:
       - type: bind
@@ -73,7 +73,7 @@ services:
     mem_limit: 2g
     cpus: 0.5
     user: smarter_user
-    image: mcdaniel0073/smarter:19489667186
+    image: mcdaniel0073/smarter:latest
     command: celery -A smarter.workers.celery.app worker --concurrency=4 --loglevel=info -Q default_celery_task_queue -E
     depends_on:
       - smarter-mysql
@@ -97,7 +97,7 @@ services:
     mem_limit: 1g
     cpus: 0.5
     user: smarter_user
-    image: mcdaniel0073/smarter:19489667186
+    image: mcdaniel0073/smarter:latest
     command: celery -A smarter.workers.celerybeat.app beat --loglevel=info
     depends_on:
       - smarter-mysql
