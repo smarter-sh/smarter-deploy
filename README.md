@@ -46,13 +46,15 @@ Smarter requires a `.env` file with your credentials and configuration. You can 
 make                # creates a .env file in the root of the repo
 ```
 
+
 **Important:**
 
 - Open the newly created `.env` file and add your credentials (API keys, passwords, etc.) as needed. The application will not run without this step.
+- Note that `.env´ contains copious inline documentation that you can refer to for specific configuration and technical guidance.
 
-### 3. Initialize and Build the Application
+### 3. Initialize the Application
 
-This step sets up the Python environment, builds the Docker container, and seeds the platform with test data:
+This step pulls the Docker containers, and seeds the platform with test data:
 
 ```console
 make init
@@ -71,12 +73,12 @@ make run
 
 ### 5. Log In
 
-Go to [http://localhost:8000/admin/login/](http://localhost:8000/admin/login/) and log in with:
+Go to [http://localhost:8000/login/](http://localhost:8000/login/) and log in with:
 
-- **Username:** `admin`
+- **Username:** `admin@smarter.sh`
 - **Password:** `smarter`
 
-> **Note:** These are default credentials for local testing. Change them for any production or public deployment.
+> **Note:** These are default credentials for local testing. You should change them for any production or public-facing deployment.
 
 ---
 
@@ -96,6 +98,7 @@ Go to [http://localhost:8000/admin/login/](http://localhost:8000/admin/login/) a
 
 **Still stuck?**
 
+- Verify that `OPENAI_API_KEY` has been set in your .env file in the root of the repository.
 - Try running `docker compose ps` to see the status of your containers.
 - Check the Docker Desktop dashboard for error logs.
 - Ask for help: [Lawrence McDaniel](https://lawrencemcdaniel.com/contact)
