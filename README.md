@@ -22,10 +22,13 @@ Features:
 
 **Smarter** provides seamless integration and interoperation between LLMs from DeepSeek, Google AI, Meta AI and OpenAI. It is LLM provider-agnostic, and provides seamless integrations to a continuously evolving list of value added services for security management, prompt content moderation, audit, cost accounting, and workflow management. **Smarter** is cloud native and runs locally, on Kubernetes, on-site in your data center or in the cloud.
 
-## Prerequisites
+## Prerequisites and Minimum System Requirements
 
 Before you begin, make sure you have:
 
+- 20Gib of available drive space
+- for Mac: Version 12 (Monterey), Apple Silicon (M1 or newer) or Intel CPU with support for virtualization
+- for Windows: Windows 10 64-bit, 64-bit processor with Second Level Address Tranlation (SLAT), 8Gib of RAM, Windows Subsystem for Linux 2 if running Windows Home Editions.
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running (includes Docker Compose)
 - Basic familiarity with using the terminal/command prompt
 - (Optional) A Git client if you want to clone this repository
