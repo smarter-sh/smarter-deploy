@@ -83,6 +83,10 @@ Go to [http://localhost:8000/login/](http://localhost:8000/login/) and log in wi
 
 > **Note:** These are default credentials for local testing. You should change them for any production or public-facing deployment.
 
+### 6. Download the Smarter Command-Line Interface
+
+You'll need to download, install and configure the cli in order to manage AI resources. Get the cli here, at [smarter.sh/cli](https://smarter.sh/cli).
+
 ---
 
 ## Troubleshooting & FAQ
