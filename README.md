@@ -15,7 +15,7 @@ Features:
 - rest api
 - web console / prompt engineer workbench
 - extensible: PyPi, NPM, VS Code Extension and more
-- publicly accessible online documentation and self onboarding resources
+- publicly accessible [online documentation](https://docs.smarter.sh/) and self onboarding resources
 - open source UI components for jump starting projects
 
 **Smarter** is a yaml manifest-based approach to managing the disparate resources that are required for creating and managing AI resources that integrate to other enterprise resources like REST Api's and Sql databases. And it gives prompt engineering teams an intuitive workbench approach to designing, prototyping, testing, deploying and managing powerful AI resources for common corporate use cases including agentic workflows, customer facing chat solutions, and more.
@@ -26,7 +26,7 @@ Features:
 
 Before you begin, make sure you have:
 
-- 20Gib of available drive space
+- 40Gib of available drive space
 - for Mac: Version 12 (Monterey), Apple Silicon (M1 or newer) or Intel CPU with support for virtualization
 - for Windows: Windows 10 64-bit, 64-bit processor with Second Level Address Tranlation (SLAT), 8Gib of RAM, Windows Subsystem for Linux 2 if running Windows Home Editions.
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running (includes Docker Compose)
