@@ -26,7 +26,7 @@ Features:
 
 Before you begin, make sure you have:
 
-- 40Gib of available drive space
+- 45Gib of available drive space
 - for Mac: Version 12 (Monterey), Apple Silicon (M1 or newer) or Intel CPU with support for virtualization
 - for Windows: Windows 10 64-bit, 64-bit processor with Second Level Address Tranlation (SLAT), 8Gib of RAM, Windows Subsystem for Linux 2 if running Windows Home Editions.
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running (includes Docker Compose)
@@ -41,7 +41,14 @@ This guide will help you deploy Smarter on your local machine using Docker Deskt
 
 If you haven't already, download and install [Docker Desktop](https://www.docker.com/products/docker-desktop/). This will also install Docker Compose.
 
-### 2. Prepare Your Environment File
+### 2. Clone the repository
+
+```console
+git clone https://github.com/smarter-sh/smarter-deploy.git
+cd smarter-deploy
+```
+
+### 3. Prepare Your Environment File
 
 Smarter requires a `.env` file with your credentials and configuration. You can scaffold a template using the following command:
 
@@ -55,7 +62,7 @@ make                # creates a .env file in the root of the repo
 - Open the newly created `.env` file and add your credentials (API keys, passwords, etc.) as needed. The application will not run without this step.
 - Note that `.env´ contains copious inline documentation that you can refer to for specific configuration and technical guidance.
 
-### 3. Initialize the Application
+### 4. Initialize the Application
 
 This step pulls the Docker containers, and seeds the platform with test data:
 
@@ -63,7 +70,7 @@ This step pulls the Docker containers, and seeds the platform with test data:
 make init
 ```
 
-### 4. Start the Application
+### 5. Start the Application
 
 Run the following command to start all Docker containers and launch the web server:
 
@@ -74,7 +81,7 @@ make run
 - The web console will be available at: [http://127.0.0.1:8000/](http://127.0.0.1:8000/) or [http://localhost:8000](http://localhost:8000)
 - If you see a login screen, your deployment is working!
 
-### 5. Log In
+### 6. Log In
 
 Go to [http://localhost:8000/login/](http://localhost:8000/login/) and log in with:
 
@@ -83,7 +90,7 @@ Go to [http://localhost:8000/login/](http://localhost:8000/login/) and log in wi
 
 > **Note:** These are default credentials for local testing. You should change them for any production or public-facing deployment.
 
-### 6. Download the Smarter Command-Line Interface
+### 7. Download the Smarter Command-Line Interface
 
 You'll need to download, install and configure the cli in order to manage AI resources. Get the cli here, at [smarter.sh/cli](https://smarter.sh/cli).
 
