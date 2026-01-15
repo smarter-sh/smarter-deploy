@@ -5,7 +5,7 @@ export
 
 ifneq ("$(wildcard .env)","")
 else
-    $(shell cp .env-example .env)
+    $(shell cp .env.example .env)
 endif
 
 .PHONY: all init run docker-check docker-shell docker-init docker-run docker-prune helm-update help

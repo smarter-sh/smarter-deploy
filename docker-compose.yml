@@ -11,7 +11,7 @@
 #
 # Each service runs in its own container, making it easy to develop, test, and deploy the application as a complete stack.
 #
-# After starting, the main application will be available at http://localhost:8000.
+# After starting, the main application will be available at http://localhost:9357.
 #
 # To start all services, run:
 #   docker-compose up
@@ -53,14 +53,14 @@ services:
     cpus: 1
     user: smarter_user
     image: mcdaniel0073/smarter:latest
-    command: gunicorn smarter.wsgi:application -b 0.0.0.0:8000 --timeout 120
+    command: gunicorn smarter.wsgi:application -b 0.0.0.0:9357 --timeout 120
     volumes:
       - type: bind
         source: ./smarter
         target: /smarter
         consistency: cached
     ports:
-      - 8000:8000
+      - 9357:9357
     depends_on:
       - smarter-mysql
       - smarter-redis

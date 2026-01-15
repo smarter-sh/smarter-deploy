@@ -50,7 +50,7 @@ cd smarter-deploy
 
 ### 3. Prepare Your Environment File
 
-Smarter requires a `.env` file with your credentials and configuration. You can scaffold a template using the following command:
+Smarter requires a [.env](./.env.example) file with your credentials and configuration. You can scaffold a template using the following command:
 
 ```console
 make                # creates a .env file in the root of the repo
@@ -59,12 +59,14 @@ make                # creates a .env file in the root of the repo
 
 **Important:**
 
-- Open the newly created `.env` file and add your credentials (API keys, passwords, etc.) as needed. The application will not run without this step.
-- Note that `.env´ contains copious inline documentation that you can refer to for specific configuration and technical guidance.
+- Open the newly created [.env](./.env.example) file and add your credentials (API keys, passwords, etc.) as needed. The application will not run without this step.
+- Note that [.env](./.env.example) contains copious inline documentation that you can refer to for specific configuration and technical guidance.
 
 ### 4. Initialize the Application
 
 This step pulls the Docker containers, and seeds the platform with test data:
+
+**START DOCKER DESKTOP**
 
 ```console
 make init
@@ -78,12 +80,12 @@ Run the following command to start all Docker containers and launch the web serv
 make run
 ```
 
-- The web console will be available at: [http://127.0.0.1:8000/](http://127.0.0.1:8000/) or [http://localhost:8000](http://localhost:8000)
+- The web console will be available at: [http://127.0.0.1:9357/](http://127.0.0.1:9357/) or [http://localhost:9357](http://localhost:9357)
 - If you see a login screen, your deployment is working!
 
 ### 6. Log In
 
-Go to [http://localhost:8000/login/](http://localhost:8000/login/) and log in with:
+Go to [http://localhost:9357/login/](http://localhost:9357/login/) and log in with:
 
 - **Username:** `admin@smarter.sh`
 - **Password:** `smarter`
@@ -104,11 +106,11 @@ You'll need to download, install and configure the cli in order to manage AI res
 
 **Port already in use?**
 
-- If you get an error about port 8000, make sure nothing else is running on that port, or change the port in your `.env` and Docker configuration.
+- If you get an error about port 9357, make sure nothing else is running on that port, or change the port in your [.env](./.env.example) and Docker configuration.
 
 **.env file issues?**
 
-- Double-check that your `.env` file exists in the project root and contains all required variables.
+- Double-check that your [.env](./.env.example) file exists in the project root and contains all required variables.
 
 **Still stuck?**
 
@@ -121,7 +123,7 @@ You'll need to download, install and configure the cli in order to manage AI res
 
 ## What to Expect
 
-- After running `make run`, you should see the Smarter web console at [http://127.0.0.1:8000/](http://127.0.0.1:8000/).
+- After running `make run`, you should see the Smarter web console at [http://127.0.0.1:9357/](http://127.0.0.1:9357/).
 - The login page should load without errors.
 - If you encounter issues, see the troubleshooting section above.
 
