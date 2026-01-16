@@ -54,23 +54,7 @@ init:
 	docker exec smarter-mysql mysql -u smarter -psmarter -e 'DROP DATABASE IF EXISTS smarter; CREATE DATABASE smarter;' && \
 	docker exec smarter-app bash -c "\
 		python manage.py makemigrations && python manage.py migrate && \
-		python manage.py initialize_waffle && \
-		python manage.py create_smarter_admin --username admin --email admin@smarter.sh --password smarter && \
-		python manage.py create_user --account_number 3141-5926-5359 --username staff_user --email staff@smarter.sh --password smarter --first_name Smarter --last_name User --admin && \
-		python manage.py create_user --account_number 3141-5926-5359 --username customer_user --email customer@smarter.sh --password smarter --first_name Customer --last_name User && \
-		python manage.py add_plugin_examples --username admin --verbose && \
-		python manage.py verify_dns_configuration && \
-		python manage.py deploy_example_chatbot && \
-		python manage.py seed_chat_history && \
-		python manage.py load_from_github --account_number 3141-5926-5359 --username admin --url https://github.com/smarter-sh/smarter-demo && \
-		python manage.py load_from_github --account_number 3141-5926-5359 --username admin --url https://github.com/smarter-sh/examples --repo_version 2 && \
-		python manage.py initialize_wagtail && \
-		python manage.py initialize_providers && \
-		python manage.py apply_manifest --filespec 'smarter/apps/account/data/example-manifests/secret-smarter-test-db.yaml' --username admin && \
-		python manage.py update_secret --name smarter_test_user --username admin --value smarter_test_user && \
-		python manage.py apply_manifest --filespec 'smarter/apps/plugin/data/sample-connections/smarter-test-db.yaml' --username admin && \
-		python manage.py create_stackademy_sql_plugin --db_host sql.lawrencemcdaniel.com --db_name smarter_test_db --db_username smarter_test_user && \
-		python manage.py create_stackademy_sql_chatbot" && \
+		python manage.py initialize_platform && \
 	echo "Docker and Smarter are initialized." && \
 	docker ps
 
@@ -80,14 +64,6 @@ run:
 	docker-compose up
 
 
-# -------------------------------------------------------------------------
-# Helm
-# -------------------------------------------------------------------------
-helm-update:
-	cd helm/charts/smarter && \
-	helm dependency update
-
-
 help:
 	@echo '===================================================================='
 	@echo 'init           - Initialize MySQL and create the smarter database'
@@ -95,7 +71,6 @@ help:
 	@echo 'docker-check   - Verify Docker is installed and running'
 	@echo 'docker-shell   - Open a shell in the smarter-app container'
 	@echo 'docker-prune   - Remove Docker containers, images, and networks'
-	@echo 'helm-update    - Update Helm chart dependencies'
 	@echo 'help           - Show this help menu'
 	@echo '===================================================================='
 
