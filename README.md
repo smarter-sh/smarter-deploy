@@ -64,7 +64,11 @@ make                # creates a .env file in the root of the repo
 
 ### 4. Initialize the Application
 
-This step pulls the Docker containers, and seeds the platform with test data:
+This step does the following:
+
+- pulls the Docker containers (takes around 5 minutes)
+- sets up the MySql database tables (takes around 3 minutes)
+- seeds the platform with test data: (takes around 2 minutes)
 
 **START DOCKER DESKTOP**
 
