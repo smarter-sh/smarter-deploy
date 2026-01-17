@@ -35,14 +35,14 @@ Before you begin, make sure you have:
 
 ### Docker Desktop
 
-You should run the following checks in a terminal window to ensure that you have the Docker command-line tools installed and running in addition to to Docker Desktop itself.
+You should run the following checks in a terminal window to ensure that you have the Docker command-line tools installed and running in addition to Docker Desktop itself.
 
 ```console
 docker --version
 docker-compose --version
 ```
 
-If you get results from both of these then you're good to go. If not, then you'll need to do some trouble shooting first. In my case I had to go to the Advanced settings of Dock Desktop, and fiddle with the radio button that toggles between the default 'system' installation of the CLI tools, and the 'User' alternative option. toggle back and forth, and clicking the 'Apply' button each time eventually got it working for me. Moreover, I had some old versions of Docker cli tools from years past which I had to delete, as these also were wreaking havoc in my development environment. Another check (for macOS), while we're on this topic, is to check the contents of `/use/local/bin` to see if both docker and docker-compose are present. If not, then you definitely have work to do.
+If you get results from both of these then you're good to go. If not, then you'll need to do some trouble shooting first. In my case I had to go to the Advanced settings of Docker Desktop, and fiddle with the radio button that toggles between the default 'system' installation of the CLI tools, and the 'User' alternative option. Toggling back and forth, and clicking the 'Apply' button each time eventually got it working for me. Moreover, I had some old versions of Docker cli tools from years past which I had to delete, as these also were wreaking havoc in my development environment. Another check (for macOS), while we're on this topic, is to check the contents of `/usr/local/bin` to see if both docker and docker-compose are present. If not, then you definitely have work to do.
 
 ## Quickstart: Run Smarter Locally with Docker
 
