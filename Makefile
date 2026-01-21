@@ -40,7 +40,7 @@ docker-prune:
 	docker network prune -f && \
 	images=$$(docker images -q) && [ -n "$$images" ] && docker rmi $$images -f || echo "No images to remove"
 
-docker-init:
+init:
 	echo "Initializing Docker..." && \
 	make docker-check && \
 	docker-compose pull && \
