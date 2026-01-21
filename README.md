@@ -26,7 +26,7 @@ Features:
 
 Before you begin, make sure you have:
 
-- 45Gib of available drive space
+- 10Gib of available drive space
 - for Mac: Version 12 (Monterey), Apple Silicon (M1 or newer) or Intel CPU with support for virtualization
 - for Windows: Windows 10 64-bit, 64-bit processor with Second Level Address Tranlation (SLAT), 8Gib of RAM, Windows Subsystem for Linux 2 if running Windows Home Editions.
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running (includes Docker Compose)
