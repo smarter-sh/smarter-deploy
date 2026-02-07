@@ -119,7 +119,20 @@ Go to [http://localhost:9357/login/](http://localhost:9357/login/) and log in wi
 
 You'll need to download, install and configure the cli in order to manage AI resources. Get the cli here, at [smarter.sh/cli](https://smarter.sh/cli).
 
----
+## Configuration
+
+The Smarter platform defaults should be sufficient for running locally for "tire kicking" and
+hacking purposes.
+
+To configure for deployment to AWS, use the `.env` to modify any settings value.
+
+- Smarter settings (see [smarter/smarter/common/conf.py](https://github.com/smarter-sh/smarter/blob/main/smarter/smarter/common/conf.py#L377)) should be prefixed with `SMARTER_`.
+
+- Django settings, including those of 3rd party Django packages included in settings.INSTALLED_APPS should be prefixed with `DJANGO_`. Django settings that exist in [smarter/smarter/settings/base.py](https://github.com/smarter-sh/smarter/blob/main/smarter/smarter/settings/base.py)
+will be cast to the same data types. For any other Django settings that you add to `.env`, 
+Smarter will attempt to analyze the value and cast it to one of: int, float, datetime, list, dict, or str.
+
+> Values that you include in `.env` will override both Smarter as well as Django default settings.
 
 ## Troubleshooting & FAQ
 
