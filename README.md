@@ -126,13 +126,14 @@ hacking purposes.
 
 To configure for deployment to AWS, use the `.env` to modify any settings value.
 
-- Smarter settings (see [smarter/smarter/common/conf.py](https://github.com/smarter-sh/smarter/blob/main/smarter/smarter/common/conf.py#L377)) should be prefixed with `SMARTER_`.
+- Smarter settings (see [smarter/smarter/common/conf.py](https://github.com/smarter-sh/smarter/blob/main/smarter/smarter/common/conf.py#L377)) should be prefixed with `SMARTER_`. For example, to set the `ROOT_DOMAIN`, you would set, `SMARTER_ROOT_DOMAIN=mydomain.com`
 
 - Django settings, including those of 3rd party Django packages included in settings.INSTALLED_APPS should be prefixed with `DJANGO_`. Django settings that exist in [smarter/smarter/settings/base.py](https://github.com/smarter-sh/smarter/blob/main/smarter/smarter/settings/base.py)
-will be cast to the same data types. For any other Django settings that you add to `.env`, 
-Smarter will attempt to analyze the value and cast it to one of: int, float, datetime, list, dict, or str.
+will be cast to the same data types. For any other Django settings that you add to `.env`,
+Smarter will attempt to analyze the value and cast it to one of: int, float, datetime, list, dict, or str. For example, to set
+Django's `ENGINE` to postgress you would set, `DJANGO_ENGINE=django.db.backends.postgresql`.
 
-> Values that you include in `.env` will override both Smarter as well as Django default settings.
+**Note**: values that you include in `.env` will override both Smarter as well as Django default settings.
 
 ## Troubleshooting & FAQ
 
