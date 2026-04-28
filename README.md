@@ -89,9 +89,17 @@ This step does the following:
 - sets up the MySql database tables (takes around 3 minutes)
 - seeds the platform with test data: (takes around 2 minutes)
 
-**START DOCKER DESKTOP**
+SMARTER_IMAGE_TAG is an environment variable for optionally specifying a Docker image tag. Managed tags and tag patters include:
+
+- latest
+- alpha
+- beta
+- v[major].[minor].[patch]
+
+START DOCKER DESKTOP
 
 ```console
+export SMARTER_IMAGE_TAG='latest' # or some other tag
 make init
 ```
 

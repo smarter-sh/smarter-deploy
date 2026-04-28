@@ -18,6 +18,21 @@ all: help
 run:
 	make docker-run
 
+init:
+	echo "Initializing Docker..." && \
+	make docker-check && \
+	docker-compose pull && \
+	docker-compose up -d && \
+	echo "Initializing Docker..." && \
+	docker exec smarter-mysql bash -c "sleep 20; until echo '\q' | mysql -u smarter -psmarter; do echo 'Waiting for MySQL to be ready...'; sleep 10; done" && \
+	docker exec smarter-mysql mysql -u smarter -psmarter -e 'DROP DATABASE IF EXISTS smarter; CREATE DATABASE smarter;' && \
+	       docker exec smarter-app bash -c "\
+		       python manage.py makemigrations && python manage.py migrate && \
+		       python manage.py initialize_platform" && \
+	       echo "Docker and Smarter are initialized." && \
+	       docker ps
+
+
 # ---------------------------------------------------------
 # Docker
 # ---------------------------------------------------------
@@ -39,20 +54,6 @@ docker-prune:
 	docker volume prune -f && \
 	docker network prune -f && \
 	images=$$(docker images -q) && [ -n "$$images" ] && docker rmi $$images -f || echo "No images to remove"
-
-init:
-	echo "Initializing Docker..." && \
-	make docker-check && \
-	docker-compose pull && \
-	docker-compose up -d && \
-	echo "Initializing Docker..." && \
-	docker exec smarter-mysql bash -c "sleep 20; until echo '\q' | mysql -u smarter -psmarter; do echo 'Waiting for MySQL to be ready...'; sleep 10; done" && \
-	docker exec smarter-mysql mysql -u smarter -psmarter -e 'DROP DATABASE IF EXISTS smarter; CREATE DATABASE smarter;' && \
-	       docker exec smarter-app bash -c "\
-		       python manage.py makemigrations && python manage.py migrate && \
-		       python manage.py initialize_platform" && \
-	       echo "Docker and Smarter are initialized." && \
-	       docker ps
 
 docker-run:
 	make docker-check && \

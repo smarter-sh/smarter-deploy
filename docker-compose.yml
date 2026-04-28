@@ -52,7 +52,7 @@ services:
     mem_limit: 4g
     cpus: 1
     user: smarter_user
-    image: mcdaniel0073/smarter:latest
+    image: mcdaniel0073/smarter:${SMARTER_IMAGE_TAG:-latest}
     command: gunicorn smarter.wsgi:application -b 0.0.0.0:9357 --timeout 120
     volumes:
       - type: bind
