@@ -26,7 +26,7 @@ init:
 	echo "Initializing Docker..." && \
 	docker exec smarter-mysql bash -c "sleep 20; until echo '\q' | mysql -u smarter -psmarter; do echo 'Waiting for MySQL to be ready...'; sleep 10; done" && \
 	docker exec smarter-mysql mysql -u smarter -psmarter -e 'DROP DATABASE IF EXISTS smarter; CREATE DATABASE smarter;' && \
-	       docker exec smarter-app bash -c "\
+	       docker exec smarter-api bash -c "\
 		       python manage.py makemigrations && python manage.py migrate && \
 		       python manage.py initialize_platform" && \
 	       echo "Docker and Smarter are initialized." && \
@@ -41,7 +41,7 @@ docker-check:
 
 docker-shell:
 	make docker-check && \
-	docker exec -it smarter-app /bin/bash
+	docker exec -it smarter-api /bin/bash
 
 docker-prune:
 	make docker-check && \
@@ -66,7 +66,7 @@ help:
 	@echo 'init           - Initialize MySQL and create the smarter database'
 	@echo 'run            - Start all Docker containers using docker-compose'
 	@echo 'docker-check   - Verify Docker is installed and running'
-	@echo 'docker-shell   - Open a shell in the smarter-app container'
+	@echo 'docker-shell   - Open a shell in the smarter-api container'
 	@echo 'docker-prune   - Remove Docker containers, images, and networks'
 	@echo 'help           - Show this help menu'
 	@echo '===================================================================='
