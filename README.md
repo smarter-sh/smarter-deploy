@@ -56,6 +56,8 @@ If you get results from both of these then you're good to go. If not, then you'l
 
 This guide will help you deploy Smarter on your local machine using Docker Desktop. You can get up and running in about 10 minutes!
 
+[![Up and Running in Less Than 10 Minutes](https://img.youtube.com/vi/El8L6zgGyRU/hqdefault.jpg)](https://youtu.be/El8L6zgGyRU)
+
 ### 1. Install Docker Desktop
 
 If you haven't already, download and install [Docker Desktop](https://www.docker.com/products/docker-desktop/). This will also install Docker Compose.
