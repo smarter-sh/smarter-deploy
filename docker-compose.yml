@@ -4,12 +4,18 @@
 #
 # This file defines and manages a multi-container application using Docker Compose.
 # It will automatically start the following services:
-#   - MySQL database: stores application data
+#   - MariaDB database: stores application data
 #   - Redis server: provides fast in-memory data storage
-#   - Celery worker: handles background tasks
+#   - Celery workers: handle background tasks. smarter-worker runs the
+#     operational tasks, and smarter-worker-infrastructure the tasks that
+#     deploy, verify and destroy DNS, certificate and Kubernetes resources
+#   - Celery beat: schedules the periodic tasks
 #   - Application server: runs the main web application
 #
 # Each service runs in its own container, making it easy to develop, test, and deploy the application as a complete stack.
+#
+# Every Smarter service runs the same image, mcdaniel0073/smarter, at the tag in
+# SMARTER_IMAGE_TAG (default: latest), so that they all run the same version.
 #
 # After starting, the main application will be available at http://localhost:9357.
 #
@@ -23,12 +29,13 @@
 #   https://docs.docker.com/compose/
 #------------------------------------------------------------------------------
 services:
-  smarter-mysql:
-    container_name: smarter-mysql
+  # Smarter's default database host is smarter-mariadb, and its default user
+  # and password are smarter and smarter: this service's.
+  smarter-mariadb:
+    container_name: smarter-mariadb
     mem_limit: 2g
     cpus: 0.5
-    image: mysql:8
-    command: ["mysqld", "--mysql-native-password=ON"]
+    image: mariadb:latest
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: smarter
@@ -38,7 +45,7 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - ./mysql-data:/var/lib/mysql
+      - ./mariadb-data:/var/lib/mysql
 
   smarter-redis:
     container_name: smarter-redis
@@ -54,37 +61,53 @@ services:
     user: smarter_user
     image: mcdaniel0073/smarter:${SMARTER_IMAGE_TAG:-latest}
     command: gunicorn smarter.wsgi:application -b 0.0.0.0:9357 --timeout 120
-    volumes:
-      - type: bind
-        source: ./smarter
-        target: /smarter
-        consistency: cached
     ports:
       - 9357:9357
     depends_on:
-      - smarter-mysql
+      - smarter-mariadb
       - smarter-redis
       - smarter-worker
     env_file:
       - ./.env
+    environment:
+      # smarter-mariadb's MYSQL_ROOT_PASSWORD, as whom initialization (make init) creates the
+      # Stackademy course database.
+      - SMARTER_SUBSYSTEM_SQL_ROOT_PASSWORD=${SMARTER_SUBSYSTEM_SQL_ROOT_PASSWORD:-smarter}
 
   smarter-worker:
     container_name: smarter-worker
     mem_limit: 2g
     cpus: 0.5
     user: smarter_user
-    image: mcdaniel0073/smarter:latest
+    image: mcdaniel0073/smarter:${SMARTER_IMAGE_TAG:-latest}
     command: celery -A smarter.workers.celery.app worker --concurrency=4 --loglevel=info -Q default_celery_task_queue -E
     depends_on:
-      - smarter-mysql
+      - smarter-mariadb
       - smarter-redis
     env_file:
       - ./.env
-    volumes:
-      - type: bind
-        source: ./smarter
-        target: /smarter
-        consistency: cached
+    healthcheck:
+      test:
+        ["CMD", "celery", "-A", "smarter.workers.celery.app", "inspect", "ping"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+  # Serves the infrastructure queue: tasks that deploy, verify and destroy cloud, Kubernetes and
+  # DNS resources, which can take many minutes. Its own worker, so that they never block the
+  # operational tasks of smarter-worker, such as prompt history, charges and budgets.
+  smarter-worker-infrastructure:
+    container_name: smarter-worker-infrastructure
+    mem_limit: 2g
+    cpus: 0.5
+    user: smarter_user
+    image: mcdaniel0073/smarter:${SMARTER_IMAGE_TAG:-latest}
+    command: celery -A smarter.workers.celery.app worker --concurrency=4 --loglevel=info -Q infrastructure_celery_task_queue -E -n infrastructure@%h
+    depends_on:
+      - smarter-mariadb
+      - smarter-redis
+    env_file:
+      - ./.env
     healthcheck:
       test:
         ["CMD", "celery", "-A", "smarter.workers.celery.app", "inspect", "ping"]
@@ -97,28 +120,16 @@ services:
     mem_limit: 1g
     cpus: 0.5
     user: smarter_user
-    image: mcdaniel0073/smarter:latest
-    command: celery -A smarter.workers.celerybeat.app beat --loglevel=info
+    image: mcdaniel0073/smarter:${SMARTER_IMAGE_TAG:-latest}
+    command: celery -A smarter.workers.celerybeat beat --loglevel=info
     depends_on:
-      - smarter-mysql
+      - smarter-mariadb
       - smarter-redis
     env_file:
       - ./.env
-    volumes:
-      - type: bind
-        source: ./smarter
-        target: /smarter
-        consistency: cached
     healthcheck:
       test:
-        [
-          "CMD",
-          "celery",
-          "-A",
-          "smarter.workers.celerybeat.app",
-          "inspect",
-          "ping",
-        ]
+        ["CMD", "celery", "-A", "smarter.workers.celerybeat", "inspect", "ping"]
       interval: 30s
       timeout: 30s
       retries: 3

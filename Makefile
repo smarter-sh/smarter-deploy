@@ -24,10 +24,10 @@ init:
 	docker-compose pull && \
 	docker-compose up -d && \
 	echo "Initializing Docker..." && \
-	docker exec smarter-mysql bash -c "sleep 20; until echo '\q' | mysql -u smarter -psmarter; do echo 'Waiting for MySQL to be ready...'; sleep 10; done" && \
-	docker exec smarter-mysql mysql -u smarter -psmarter -e 'DROP DATABASE IF EXISTS smarter; CREATE DATABASE smarter;' && \
+	docker exec smarter-mariadb bash -c "sleep 20; until echo '\q' | mariadb -u smarter -psmarter; do echo 'Waiting for MariaDB to be ready...'; sleep 10; done" && \
+	docker exec smarter-mariadb mariadb -u smarter -psmarter -e 'DROP DATABASE IF EXISTS smarter; CREATE DATABASE smarter CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;' && \
 	       docker exec smarter-api bash -c "\
-		       python manage.py makemigrations && python manage.py migrate && \
+		       python manage.py migrate && \
 		       python manage.py initialize_platform" && \
 	       echo "Docker and Smarter are initialized." && \
 	       docker ps
@@ -48,7 +48,7 @@ docker-prune:
 	docker-compose down && \
 	docker builder prune -a -f && \
 	docker image prune -a -f && \
-	rm -rf ./mysql-data && \
+	rm -rf ./mariadb-data && \
 	find ./ -name celerybeat-schedule -type f -exec rm -f {} + && \
 	docker system prune -a --volumes && \
 	docker volume prune -f && \
@@ -63,7 +63,7 @@ docker-run:
 
 help:
 	@echo '===================================================================='
-	@echo 'init           - Initialize MySQL and create the smarter database'
+	@echo 'init           - Initialize MariaDB and create the smarter database'
 	@echo 'run            - Start all Docker containers using docker-compose'
 	@echo 'docker-check   - Verify Docker is installed and running'
 	@echo 'docker-shell   - Open a shell in the smarter-api container'

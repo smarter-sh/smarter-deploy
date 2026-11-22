@@ -88,7 +88,7 @@ make                # creates a .env file in the root of the repo
 This step does the following:
 
 - pulls the Docker containers (takes around 5 minutes)
-- sets up the MySql database tables (takes around 3 minutes)
+- sets up the MariaDB database tables (takes around 3 minutes)
 - seeds the platform with test data: (takes around 2 minutes)
 
 SMARTER_IMAGE_TAG is an environment variable for optionally specifying a Docker image tag. Managed tags and tag patters include:
