@@ -12,8 +12,8 @@ helm upgrade --install --force smarter oci://ghcr.io/smarter-sh/charts/smarter \
   --timeout 900s \
   --create-namespace \
   --namespace smarter \
-  --set env.OPENAI_API_KEY=<your-openai-api-key> \
-  --set env.GOOGLE_MAPS_API_KEY=<your-google-api-key>
+  --set env.SMARTER_APP_PROVIDER_OPENAI_API_KEY=<your-openai-api-key> \
+  --set env.SMARTER_APP_PROVIDER_GOOGLE_MAPS_API_KEY=<your-google-api-key>
   --values values.yaml
 ```
 
@@ -29,8 +29,8 @@ Minimum required configuration in your `values.yaml`:
 
 ```yaml
 env:
-  OPENAI_API_KEY: "YOUR-OPENAI-API-KEY"
-  GOOGLE_MAPS_API_KEY: "YOUR-GOOGLE-MAPS-API-KEY"
-  GEMINI_API_KEY: "YOUR-GEMINI-API-KEY"
-  LLAMA_API_KEY: "LLAMA-API-KEY"
+  SMARTER_APP_PROVIDER_OPENAI_API_KEY: "YOUR-OPENAI-API-KEY"
+  SMARTER_APP_PROVIDER_GOOGLE_MAPS_API_KEY: "YOUR-GOOGLE-MAPS-API-KEY"
+  SMARTER_APP_PROVIDER_GEMINI_API_KEY: "YOUR-GEMINI-API-KEY"
+  SMARTER_APP_PROVIDER_LLAMA_API_KEY: "LLAMA-API-KEY"
 ```
